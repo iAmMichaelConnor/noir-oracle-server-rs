@@ -4,19 +4,21 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# For the server
 anyhow = "1"
-ark-bn254 = "0.4.0"
-ark-ff = "0.4.2"
-hyper = "1.5.0"
+# hyper = "1.5.0"
 jsonrpsee = { version = "0.24.7", features = ["server", "http-client", "ws-client", "macros", "client-ws-transport-tls"] }
-num-bigint = "0.4.6"
-num-traits = "0.2.19"
 serde = "1.0.213"
 serde_json = "1.0.132"
 tokio = "1.41.0"
 tokio-stream = { version = "0.1.16", features = ["sync"] }
-tower = { version = "0.4.13", features= ["full"]} 
-tower-http = { version = "0.6.1", features = ["full"] }
+# tower = { version = "0.4.13", features= ["full"]} 
+# tower-http = { version = "0.6.1", features = ["full"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 
+# For the example ops
+ark-bn254 = "0.4.0"
+ark-ff = "0.4.2"
+num-bigint = "0.4.6"
+num-traits = "0.2.19"
