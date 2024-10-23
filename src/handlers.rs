@@ -58,12 +58,14 @@ pub(crate) fn handle_get_sqrt(inputs: &Vec<ForeignCallParam<String>>) -> Value {
     let as_big_uint: BigUint = sqrt.unwrap().into();
     let as_hex_str = as_big_uint.to_str_radix(16);
 
+    let oracle_return_data_the_noir_program_expects = as_hex_str;
+
     /**** FORMAT RESULT FOR NOIR CONSUMPTION, AND CONVERT RESULT TO JSON `Value` TYPE ****/
     //** Note: I'm converting to `Value` within these "handler" functions, instead of within the main callback (the callback inside run_server --> module.register_method --> resolve_foreign_call), because the return types can be subtly different: Vec<String>, or Vec<Vec<String>>, or maybe some more-complex arrangement of Strings and Vec<Strings>. It felt easiest to have the "hander" functions figure out how to serialise their return data. */
-    let return_values = vec![as_hex_str];
-    println!("return values: {:?}", return_values);
+    let return_vec = vec![oracle_return_data_the_noir_program_expects];
+    println!("return_vec: {:?}", return_vec);
 
-    let json_response = json!({"values" : return_values});
+    let json_response = json!({"values" : return_vec});
     println!("json_response: {:?}", json_response);
     json_response
 }
@@ -105,11 +107,13 @@ pub(crate) fn handle_get_sqrts(inputs: &Vec<ForeignCallParam<String>>) -> Value 
         sqrts.push(as_hex_str);
     }
 
-    /**** FORMAT RESULT FOR NOIR CONSUMPTION, AND CONVERT RESULT TO JSON `Value` TYPE ****/
-    let return_values = vec![sqrts]; // Notice! This is a different type from the singular handle_get_sqrt function! Hence why the `Value` is being computed inside this function, instead in the calling function.
-    println!("return values: {:?}", return_values);
+    let oracle_return_data_the_noir_program_expects = sqrts;
 
-    let json_response = json!({"values" : return_values});
+    /**** FORMAT RESULT FOR NOIR CONSUMPTION, AND CONVERT RESULT TO JSON `Value` TYPE ****/
+    let return_vec = vec![oracle_return_data_the_noir_program_expects]; // Notice! This is a different type from the singular handle_get_sqrt function! Hence why the `Value` is being computed inside this function, instead in the calling function.
+    println!("return_vec: {:?}", return_vec);
+
+    let json_response = json!({"values" : return_vec});
     println!("json_response: {:?}", json_response);
     json_response
 }
