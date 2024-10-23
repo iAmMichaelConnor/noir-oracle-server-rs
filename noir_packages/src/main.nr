@@ -7,6 +7,8 @@ unconstrained fn get_sqrt(input: Field) -> Field {
 
 fn main(input: Field) {
     let sqrt = get_sqrt(input);
+    println(f"sqrt: {sqrt}");
+    // 0x30644E72E131A029B85045B68181585D2833E84879B9709143E1F593EFFFFFFF
     assert(sqrt * sqrt == input);
 }
 
