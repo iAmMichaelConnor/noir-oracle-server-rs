@@ -7,6 +7,10 @@ See [these docs](https://github.com/noir-lang/noir/blob/jc/update-oracle-how-to/
 3. Write [handlers](./src/handlers.rs) to format the inputs, call rust functions, and format the outputs.
 4. Write [rust functions](./src/ops.rs) to compute whatever you wanted your oracle call to compute.
 
+## Ack
+
+Co-written @iAmMichaelConnor @kashbrti (pair programming, and not sure why the initial day of commits don't reflect the shared contributions, since "co-authored-by" was set in the commit messages).
+
 ## Test
 
 In one terminal:
