@@ -1090,6 +1090,7 @@ dependencies = [
  "hyper",
  "jsonrpsee",
  "num-bigint",
+ "num-traits",
  "serde",
  "serde_json",
  "tokio",
