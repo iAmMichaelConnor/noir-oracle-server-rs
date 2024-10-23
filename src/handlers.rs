@@ -106,7 +106,7 @@ pub(crate) fn handle_get_sqrts(inputs: &Vec<ForeignCallParam<String>>) -> Value 
     }
 
     /**** FORMAT RESULT FOR NOIR CONSUMPTION, AND CONVERT RESULT TO JSON `Value` TYPE ****/
-    let return_values = vec![sqrts];
+    let return_values = vec![sqrts]; // Notice! This is a different type from the singular handle_get_sqrt function! Hence why the `Value` is being computed inside this function, instead in the calling function.
     println!("return values: {:?}", return_values);
 
     let json_response = json!({"values" : return_values});

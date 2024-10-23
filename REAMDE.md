@@ -8,4 +8,4 @@ In another terminal:
 
 `cd noir_packages`
 
-`nargo test --oracle-resolver http://127.0.0.1:3000`
+`nargo test --show-output --oracle-resolver http://127.0.0.1:3000`
