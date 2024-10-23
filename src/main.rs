@@ -1,3 +1,5 @@
+// This copyright notice relates to the `jsonrpsee` boilerplate that was used to kickstart this project:
+
 // Copyright 2019-2021 Parity Technologies (UK) Ltd.
 //
 // Permission is hereby granted, free of charge, to any
