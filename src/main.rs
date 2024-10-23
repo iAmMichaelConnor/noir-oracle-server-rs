@@ -24,15 +24,16 @@
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+mod foreign_call;
+mod handlers;
+mod ops;
+
 use jsonrpsee::server::{RpcModule, Server};
 use std::net::SocketAddr;
 use tracing_subscriber::util::SubscriberInitExt;
 
 use serde::Deserialize;
 use serde_json::{json, Value};
-
-mod foreign_call;
-mod handlers;
 
 use crate::foreign_call::ForeignCallParam;
 use crate::handlers::{handle_get_sqrt, handle_get_sqrts};

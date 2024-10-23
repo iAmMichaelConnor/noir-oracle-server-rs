@@ -5,7 +5,7 @@ See [these docs](https://github.com/noir-lang/noir/blob/jc/update-oracle-how-to/
 1. Write Noir code which makes oracle calls. See example [here](./noir_packages/src/main.nr).
 2. In [main.rs](./src/main.rs), route each oracle call to a handler.
 3. Write [handlers](./src/handlers.rs) to format the inputs, call rust functions, and format the outputs.
-4. Write rust functions to compute whatever you wanted your oracle call to compute.
+4. Write [rust functions](./src/ops.rs) to compute whatever you wanted your oracle call to compute.
 
 ## Test
 
