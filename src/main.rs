@@ -41,6 +41,7 @@ use serde_json::{json, Map, Value};
 
 use ark_bn254::Fr;
 use ark_ff::{Field, PrimeField};
+use num_bigint::{BigUint, ToBigUint};
 use std::str::FromStr;
 
 #[tokio::main]
@@ -82,17 +83,6 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-// THIS IS A TYPESCRIPT EXAMPLE
-// server.addMethod("resolve_foreign_call", async (params) => {
-//     if (params[0].function !== "getSqrt") {
-//         throw Error("Unexpected foreign call")
-//     };
-//     const values = params[0].inputs[0].map((field) => {
-//         return `${Math.sqrt(parseInt(field, 16))}`;
-//     });
-//     return { values: [values] };
-// });
-
 fn print_type<T>(_: &T) {
     println!("{:?}", std::any::type_name::<T>());
 }
@@ -107,6 +97,7 @@ struct RequestData {
 }
 #[derive(Debug, Deserialize)]
 struct Requests(Vec<RequestData>); // Wrap it in a struct to handle the array
+
 fn handle_get_sqrt(inputs: &Vec<String>) -> String {
     println!("inputs: {:?}", inputs[0]);
 
@@ -139,7 +130,10 @@ fn handle_get_sqrt(inputs: &Vec<String>) -> String {
         panic!("division by zero");
     }
 
-    sqrt.unwrap().into_bigint().to_string()
+    // sqrt.unwrap().into_bigint().to_string()
+    let as_big_uint: BigUint = sqrt.unwrap().into();
+    let as_hex_str = as_big_uint.to_str_radix(16);
+    as_hex_str
 }
 
 fn handle_unknown_function(input: &RequestData) -> String {
@@ -159,7 +153,6 @@ async fn run_server() -> anyhow::Result<SocketAddr> {
         print_type(&params);
         println!("params{:?}", params);
 
-        // Attempt to extract the string from Params
         let response: String = if let Some(json_string) = params.as_str() {
             // Deserialize the JSON string into your struct
             let requests: Requests =
@@ -169,8 +162,6 @@ async fn run_server() -> anyhow::Result<SocketAddr> {
 
             let result: String = match request.function.as_str() {
                 "getSqrt" => handle_get_sqrt(&request.inputs),
-                // "getSum" => handle_get_sum(&request),
-                // "getDiff" => handle_get_diff(&request),
                 _ => handle_unknown_function(&request),
             };
             println!("{:?}", request.function);
@@ -182,27 +173,13 @@ async fn run_server() -> anyhow::Result<SocketAddr> {
         };
 
         println!("response: {:?}", response);
-        // let mut resp_map = Map::new();
-        // let data = r#"{"value": response}"#;
-        // // let val: Value = serde_json::from_str()
-        // let v: Value = serde_json
-        // resp_map.insert(String::from("values"), Value::String(response));
-        // let obj = Value::Object(resp_map);
-        // obj
-        // let json_response = jsonify_single(response).unwrap();
-        // json_response
-        // // response
-        // let json_response = jsonify_single(response);
 
         // HELP! THIS IS WHAT WE'RE RETURNING.
         // The response should be: 21888242871839275222246405745257275088548364400416034343698204186575808495615 = 0x30644E72E131A029B85045B68181585D2833E84879B9709143E1F593EFFFFFFF
         // ... but we're getting 0x1141608e3876c1a5434c1a8094cba4e340aad219cffec5f5785d715858443db9 when printing it inside the noir program.
-        let response_j = json!({"values" : vec!(response)}); //.to_string();
-                                                             // let json_response = json!({"ForeignCallResult": response_j}); // ForeignCallResult: { ... }
-                                                             // println!("the json {:?}", json_response);
-                                                             // let json_response = json!({"ForeignCallResult\":{\"values\":[\"21888242871839275222246405745257275088548364400416034343698204186575808495615\"]}}});
+        let response_j = json!({"values" : vec!(response)});
 
-        // println!("json response: {:?}", json_response);
+        println!("response_j: {:?}", response_j);
         response_j
     })?;
 

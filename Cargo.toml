@@ -9,6 +9,7 @@ ark-bn254 = "0.4.0"
 ark-ff = "0.4.2"
 hyper = "1.5.0"
 jsonrpsee = { version = "0.24.7", features = ["server", "http-client", "ws-client", "macros", "client-ws-transport-tls"] }
+num-bigint = "0.4.6"
 serde = "1.0.213"
 serde_json = "1.0.132"
 tokio = "1.41.0"
