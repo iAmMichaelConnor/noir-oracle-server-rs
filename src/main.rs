@@ -37,7 +37,7 @@ use tower_http::LatencyUnit;
 use tracing_subscriber::util::SubscriberInitExt;
 
 use serde::{Deserialize, Serialize};
-// use serde_json::Value;
+use serde_json::{json, Map, Value};
 
 use ark_bn254::Fr;
 use ark_ff::{Field, PrimeField};
@@ -182,8 +182,24 @@ async fn run_server() -> anyhow::Result<SocketAddr> {
         };
 
         println!("response: {:?}", response);
+        // let mut resp_map = Map::new();
+        // let data = r#"{"value": response}"#;
+        // // let val: Value = serde_json::from_str()
+        // let v: Value = serde_json
+        // resp_map.insert(String::from("values"), Value::String(response));
+        // let obj = Value::Object(resp_map);
+        // obj
+        // let json_response = jsonify_single(response).unwrap();
+        // json_response
+        // // response
+        // let json_response = jsonify_single(response);
+        let response_j = json!({"values" : response}); //.to_string();
+        let json_response = json!({"ForeignCallResult": response_j}); // ForeignCallResult: { ... }
+        println!("the json {:?}", json_response);
+        // let json_response = json!({"ForeignCallResult\":{\"values\":[\"21888242871839275222246405745257275088548364400416034343698204186575808495615\"]}}});
 
-        response
+        println!("json response: {:?}", json_response);
+        json_response
     })?;
 
     let addr = server.local_addr()?;
@@ -199,4 +215,41 @@ async fn run_server() -> anyhow::Result<SocketAddr> {
     handle.stopped().await;
 
     Ok(addr)
+}
+
+// Define type alias for a single foreign call as a String
+pub type ForeignCallSingle = String;
+
+// Define type alias for an array of foreign calls as a Vec<String>
+pub type ForeignCallArray = Vec<String>;
+
+// Define the struct for ForeignCallResult
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ForeignCallResult {
+    pub values: Vec<ForeignCallVariant>, // Use an enum to represent the variants
+}
+
+// Define an enum to represent either a single or an array of foreign calls
+#[derive(Serialize, Deserialize, Debug)]
+pub enum ForeignCallVariant {
+    Single(ForeignCallSingle), // Variant for single foreign call
+    Array(ForeignCallArray),   // Variant for array of foreign calls
+}
+
+fn jsonify_single(value: String) -> Value {
+    // Create an instance of ForeignCallResult
+    let mut result = ForeignCallResult { values: Vec::new() };
+
+    // Push a single foreign call into the values
+    result.values.push(ForeignCallVariant::Single(value));
+
+    json!(result)
+
+    // // Serialize the result to JSON
+    // let json_result = serde_json::to_string(&result)?;
+
+    // // Print the JSON result
+    // println!("{}", json_result);
+
+    // Ok(format!("ForeignCallResult: {}", json_result))
 }
