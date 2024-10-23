@@ -1,0 +1,7 @@
+[package]
+name = "noir_packages"
+type = "bin"
+authors = [""]
+compiler_version = ">=0.35.0"
+
+[dependencies]
